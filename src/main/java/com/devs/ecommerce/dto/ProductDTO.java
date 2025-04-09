@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class ProductDTO {
     private Long id;
@@ -17,10 +20,9 @@ public class ProductDTO {
     private double price;
     @PositiveOrZero(message = "Quantity must be positive")
     private Integer quantity;
-    private String image;
+    private List<String> images = new ArrayList<>();
     @NotNull(message = "Product category is required")
     private CategoryResponseDTO category;
     @NotNull(message = "Product brand is required")
     private BrandResponseDTO brand;
-    //private List<CommentDTO> comments;
 }

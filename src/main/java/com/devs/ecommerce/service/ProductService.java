@@ -3,7 +3,6 @@ package com.devs.ecommerce.service;
 import com.devs.ecommerce.dto.ProductDTO;
 import com.devs.ecommerce.dto.ProductListDTO;
 import com.devs.ecommerce.exception.ResourceNotFoundException;
-import com.devs.ecommerce.mapper.CategoryMapper;
 import com.devs.ecommerce.mapper.ProductMapper;
 import com.devs.ecommerce.model.Brand;
 import com.devs.ecommerce.model.Category;
@@ -24,6 +23,8 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,44 +37,84 @@ public class ProductService {
     private static final String UPLOADED_DIR = "src/main/resources/static/images/";
 
     @Transactional
-    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile image) throws IOException  {
+    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile[] images) throws IOException  {
         Product product = productMapper.toEntity(productDTO);
-        if (image != null && !image.isEmpty()){
-            String fileName = saveImage(image);
-            product.setImage("/images/"+fileName);
+
+        Category category = categoryRepository.findById(productDTO.getCategory().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        Brand brand = brandRepository.findById(productDTO.getBrand().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Brand not found"));
+
+        product.setCategory(category);
+        product.setBrand(brand);
+
+        List<String> imagePaths = new ArrayList<>();
+        if (images != null && images.length > 0) {
+            //List<String> imagePaths = new ArrayList<>();
+            for (MultipartFile image : images) {
+                String fileName = saveImage(image);
+                imagePaths.add("/images/" + fileName);
+            }
+        }else {
+            System.out.println("Images are Null or empty"+ images);
         }
+        product.setImages(imagePaths);
+
         Product savedProduct = productRepository.save(product);
         return productMapper.toDTO(savedProduct);
     }
 
     @Transactional
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile image) throws IOException {
+    public ProductDTO updateProduct(Long id, ProductDTO productDTO, MultipartFile[] images) throws IOException {
         Product existingProduct = productRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        // Check and delete existing image(s)
+        if (existingProduct.getImages() != null) {
+            deleteImages(existingProduct.getImages());
+        }
+
         Category category = categoryRepository.findById(productDTO.getCategory().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         Brand brand = brandRepository.findById(productDTO.getBrand().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Brand not found"));
+
         existingProduct.setName(productDTO.getName());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setPrice(productDTO.getPrice());
         existingProduct.setQuantity(productDTO.getQuantity());
         existingProduct.setCategory(category);
         existingProduct.setBrand(brand);
-        if (image != null && !image.isEmpty()){
-            String fileName = saveImage(image);
-            existingProduct.setImage("/images/"+fileName);
+        List<String> imagePaths = new ArrayList<>();
+        if (images != null && images.length > 0) {
+            for (MultipartFile image : images) {
+                String fileName = saveImage(image);
+                imagePaths.add("/images/" + fileName);
+            }
+        } else{
+            System.out.println("No image has been added "+ images);
         }
+        existingProduct.setImages(imagePaths);
+
         Product updatedProduct = productRepository.save(existingProduct);
         return productMapper.toDTO(updatedProduct);
     }
 
+    private String saveImage(MultipartFile image) throws IOException {
+        String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+        Path path = Paths.get(UPLOADED_DIR + fileName);
+        Files.createDirectories(path.getParent());
+        Files.write(path, image.getBytes());
+        return fileName;
+    }
+
     @Transactional
     public void deleteProduct(Long id) {
-        if(!productRepository.existsById(id)){
-            throw new ResourceNotFoundException(("Product not existing"));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        if (product.getImages() != null ) {
+            deleteImages(product.getImages()); // Delete existing image if any
         }
-
         productRepository.deleteById(id);
     }
 
@@ -85,14 +126,6 @@ public class ProductService {
 
     public Page<ProductListDTO> getAllProducts(@PageableDefault(size = 15) Pageable pageable){
         return productRepository.findAllWithoutComments(pageable);
-    }
-
-    private String saveImage(MultipartFile image) throws IOException{
-        String fileName =UUID.randomUUID().toString()+"_"+image.getOriginalFilename();
-        Path path = Paths.get(UPLOADED_DIR + fileName);
-        Files.createDirectories(path.getParent());
-        Files.write(path, image.getBytes());
-        return fileName;
     }
 
     public Page<ProductListDTO> searchProducts(@PageableDefault(size = 15) Pageable pageable,
@@ -116,6 +149,20 @@ public class ProductService {
         }
         // If categoryId is provided, search with category filter
         return productRepository.filterProduct(pageable, categoryId, query, minPrice, maxPrice);
-
     }
+
+    private void deleteImages(List<String> imagePaths) {
+        if (imagePaths != null && !imagePaths.isEmpty()) {
+            for (String imagePath : imagePaths) {
+                Path path = Paths.get(UPLOADED_DIR + imagePath);
+                try {
+                    Files.deleteIfExists(path);  // Delete the image file if it exists
+                } catch (IOException e) {
+                    // Log the error or handle it as necessary
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

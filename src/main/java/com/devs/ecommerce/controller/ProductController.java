@@ -34,8 +34,8 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductDTO> createProduct(@AuthenticationPrincipal UserDetails userDetails,
                                                     @RequestPart("product") @Valid ProductDTO productDTO,
-                                                    @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
-        return ResponseEntity.ok(productService.createProduct(productDTO, image));
+                                                    @RequestPart(value = "images", required = false) MultipartFile[] images) throws IOException {
+        return ResponseEntity.ok(productService.createProduct(productDTO, images));
     }
 
     @Operation(summary = "Update product", description = "Updates product")
@@ -45,8 +45,8 @@ public class ProductController {
     public ResponseEntity<ProductDTO> updateProduct(@AuthenticationPrincipal UserDetails userDetails,
                                                     @PathVariable Long id,
                                                     @RequestPart("product") @Valid ProductDTO productDTO,
-                                                    @RequestPart(value = "image", required = false) MultipartFile image)throws IOException{
-        return  ResponseEntity.ok(productService.updateProduct(id, productDTO, image));
+                                                    @RequestPart(value = "images", required = false) MultipartFile[] images)throws IOException{
+        return  ResponseEntity.ok(productService.updateProduct(id, productDTO, images));
     }
 
     @Operation(summary = "Delete a product", description = "Deletes product from the e-commerce platform")

@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -18,19 +21,19 @@ public class Product {
     private String description;
     private double price;
     private Integer quantity;
-    private String image;
+    //private String image;
+
+    //@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    //private List<ProductImage> images = new ArrayList<>();
+
+    //@ElementCollection
+    private List<String> images = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category; // Add relationship to Category
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
-
-
-    /*
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
-     */
 }

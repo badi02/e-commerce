@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class ProductListDTO {
     private double price;
     @PositiveOrZero(message = "Quantity must be positive")
     private Integer quantity;
-    private String image;
+    private List<String> images;
     @NotBlank(message = "Product category is required")
     private String categoryName;
     @NotBlank(message = "Product brand is required")
