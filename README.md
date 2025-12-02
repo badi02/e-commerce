@@ -1,8 +1,4 @@
 # 🛒 E-Commerce Backend API
-![ alt text ](https://img.shields.io/badge/Java-17%252B-orange?style=for-the-badge&logo=openjdk)
-![ alt text ](https://img.shields.io/badge/Spring%2520Boot-3.x-green?style=for-the-badge&logo=spring)
-![ alt text ](https://img.shields.io/badge/PostgreSQL-15-blue?style=for-the-badge&logo=postgresql)
-![ alt text ](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)
 ![Build Status](https://img.shields.io/gitlab/pipeline-status/badi_ais/e-commerce?branch=main&style=for-the-badge&label=Build)
 ![Tests](https://img.shields.io/gitlab/pipeline-coverage/badi_ais/e-commerce?branch=main&style=for-the-badge&label=Tests)
 ![GitLab Issues](https://img.shields.io/gitlab/issues/open/badi_ais/e-commerce?style=for-the-badge&label=Issues)
