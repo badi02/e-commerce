@@ -23,12 +23,12 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
      */
-    //private String guestId; // << NEW
+    //private String guestId;
     private String name;
     private String address;
-    private String town; // Store town name
+    private String town;
     private String phoneNumber;
-    private double deliveryTax; // Store delivery tax amount
+    private double deliveryTax;
     private double totalPrice;
     private OrderStatus status;
     public enum OrderStatus {

@@ -25,7 +25,6 @@ import java.util.List;
 public class BrandController {
     private final BrandService brandService;
 
-    // Create a new category
     @Operation(summary = "Create a new brand", description = "Creates a new brand in the e-commerce platform")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
@@ -36,7 +35,6 @@ public class BrandController {
         return ResponseEntity.ok(brandResponse);
     }
 
-    // Get all categories
     @Operation(summary = "Get all brands", description = "Retrieves all brands in the e-commerce platform")
     @GetMapping
     public ResponseEntity<List<BrandResponseDTO>> getAllBrands() {
@@ -44,7 +42,6 @@ public class BrandController {
         return ResponseEntity.ok(brands);
     }
 
-    // Get a category by ID
     @Operation(summary = "Get a brand by Id", description = "Retrieves a brand by Id in the e-commerce platform")
     @GetMapping("/{id}")
     public ResponseEntity<BrandResponseDTO> getBrandById(@PathVariable Long id) {
@@ -52,7 +49,6 @@ public class BrandController {
         return ResponseEntity.ok(brand);
     }
 
-    // Update a category
     @Operation(summary = "Update brand", description = "updates brand in the e-commerce platform")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{id}")
@@ -64,7 +60,6 @@ public class BrandController {
         return ResponseEntity.ok(updatedBrand);
     }
 
-    // Delete a category
     @Operation(summary = "Delete a brand", description = "Deletes a brand from the e-commerce platform")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{id}")

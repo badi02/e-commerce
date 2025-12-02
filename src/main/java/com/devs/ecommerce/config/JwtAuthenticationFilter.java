@@ -37,23 +37,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             username = jwtService.extractUsername(jwt);
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication()==null){
-            // ✅ Validate token expiration
+            // Validate token expiration
             if (jwtService.isTokenExpired(jwt)) {
                 filterChain.doFilter(request, response);
                 return;
             }
 
-            // ✅ Extract roles from token
+            // Extract roles from token
             List<String> roles = jwtService.extractRoles(jwt);
 
-            // ✅ Convert roles to GrantedAuthority
+            // Convert roles to GrantedAuthority
             List<SimpleGrantedAuthority> authorities = roles.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if (jwtService.validateToken(jwt, userDetails)){
-                //UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -18,7 +18,6 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    // Create a new category
     @Transactional
     public CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequest) {
         Category category = categoryMapper.toEntity(categoryRequest);
@@ -26,19 +25,16 @@ public class CategoryService {
         return categoryMapper.toResponse(category);
     }
 
-    // Get all categories
     public List<CategoryResponseDTO> getAllCategories() {
         return categoryMapper.toResponses(categoryRepository.findAll());
     }
 
-    // Get a category by ID
     public CategoryResponseDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         return categoryMapper.toResponse(category);
     }
 
-    // Update a category
     @Transactional
     public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO categoryRequest) {
         Category existingCategory = categoryRepository.findById(id)
@@ -50,7 +46,6 @@ public class CategoryService {
         return categoryMapper.toResponse(updatedCategory);
     }
 
-    // Delete a category
     @Transactional
     public void deleteCategory(Long id) {
         if (!categoryRepository.existsById(id)) {

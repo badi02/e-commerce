@@ -22,7 +22,6 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    // Create a new category
     @Operation(summary = "Create a new category", description = "Creates a new category in the e-commerce platform")
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
@@ -33,7 +32,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryResponse);
     }
 
-    // Get all categories
     @Operation(summary = "Get all categories", description = "Retrieves all categories in the e-commerce platform")
     @GetMapping
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategories() {
@@ -41,7 +39,6 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    // Get a category by ID
     @Operation(summary = "Get a category by Id", description = "Retrieves a category by Id in the e-commerce platform")
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> getCategoryById(@PathVariable Long id) {
@@ -49,7 +46,6 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
-    // Update a category
     @Operation(summary = "Update category", description = "updates category in the e-commerce platform")
     @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{id}")
@@ -61,7 +57,6 @@ public class CategoryController {
         return ResponseEntity.ok(updatedCategory);
     }
 
-    // Delete a category
     @Operation(summary = "Delete a category", description = "Deletes a category from the e-commerce platform")
     @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{id}")

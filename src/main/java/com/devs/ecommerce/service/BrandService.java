@@ -18,7 +18,6 @@ public class BrandService {
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;
 
-    // Create a new category
     @Transactional
     public BrandResponseDTO createBrand(BrandRequestDTO brandRequest) {
         Brand brand = brandMapper.toEntity(brandRequest);
@@ -26,19 +25,16 @@ public class BrandService {
         return brandMapper.toResponse(brand);
     }
 
-    // Get all categories
     public List<BrandResponseDTO> getAllBrands() {
         return brandMapper.toResponses(brandRepository.findAll());
     }
 
-    // Get a category by ID
     public BrandResponseDTO getBrandById(Long id) {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Brand not found"));
         return brandMapper.toResponse(brand);
     }
 
-    // Update a category
     @Transactional
     public BrandResponseDTO updateBrand(Long id, BrandRequestDTO brandRequest) {
         Brand existingBrand = brandRepository.findById(id)
@@ -49,7 +45,6 @@ public class BrandService {
         return brandMapper.toResponse(updatedBrand);
     }
 
-    // Delete a category
     @Transactional
     public void deleteBrand(Long id) {
         if (!brandRepository.existsById(id)) {

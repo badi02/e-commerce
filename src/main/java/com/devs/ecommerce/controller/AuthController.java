@@ -78,7 +78,6 @@ public class AuthController {
         }
     }*/
 
-    //update
     @Operation(summary = "Get user role", description = "Retrieves user role the e-commerce platform")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/user/role")
@@ -95,7 +94,6 @@ public class AuthController {
         return ResponseEntity.notFound().build();
     }
 
-    //update
     @Operation(summary = "Get user email by Id", description = "Retrieves user email in the e-commerce platform")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/user/{id}")

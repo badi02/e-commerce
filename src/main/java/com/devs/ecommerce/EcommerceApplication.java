@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = {"com.devs.ecommerce", "com.devs.ecommerce.mapper"})
-@EntityScan("com.devs.ecommerce.model")  // Adjust this path!
+@EntityScan("com.devs.ecommerce.model")
 @EnableJpaRepositories("com.devs.ecommerce.repositories")
 public class EcommerceApplication {
 
