@@ -1,5 +1,7 @@
 package com.devs.ecommerce.dto;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
@@ -12,5 +14,5 @@ public class OrderItemDTO {
     @PositiveOrZero()
     private Integer quantity;
     @Positive()
-    private double price;
+    private BigDecimal price;
 }

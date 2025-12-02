@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class OrderResponseDTO {
     @NotBlank(message = "Address is required")
     private String address;
     @PositiveOrZero(message = "Delivery Tax is always positive or zero")
-    private double deliveryTax;
+    private BigDecimal deliveryTax;
     @Positive(message = "Price is always positive")
-    private double price; // Price per unit
+    private BigDecimal price; // Price per unit
     private Order.OrderStatus status;
     private LocalDateTime createdAt;
     private List<OrderItemResponseDTO> items;

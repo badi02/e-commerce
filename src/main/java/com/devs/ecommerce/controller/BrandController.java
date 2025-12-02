@@ -2,10 +2,7 @@ package com.devs.ecommerce.controller;
 
 import com.devs.ecommerce.dto.BrandRequestDTO;
 import com.devs.ecommerce.dto.BrandResponseDTO;
-import com.devs.ecommerce.dto.CategoryRequestDTO;
-import com.devs.ecommerce.dto.CategoryResponseDTO;
 import com.devs.ecommerce.service.BrandService;
-import com.devs.ecommerce.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

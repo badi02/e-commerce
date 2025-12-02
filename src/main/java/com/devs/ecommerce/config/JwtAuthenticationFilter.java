@@ -42,8 +42,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
-
-            // Extract roles from token
             List<String> roles = jwtService.extractRoles(jwt);
 
             // Convert roles to GrantedAuthority

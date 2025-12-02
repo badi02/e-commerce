@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -19,7 +20,7 @@ public class ProductListDTO {
     @NotBlank(message = "Description is required")
     private String description;
     @Positive(message = "Price ust be positive")
-    private double price;
+    private BigDecimal price;
     @PositiveOrZero(message = "Quantity must be positive")
     private Integer quantity;
     private List<String> images;

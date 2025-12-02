@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class ProductDTO {
     @NotBlank(message = "Description is required")
     private String description;
     @Positive(message = "Price must be positive")
-    private double price;
+    private BigDecimal price;
     @PositiveOrZero(message = "Quantity must be positive")
     private Integer quantity;
     private List<String> images = new ArrayList<>();

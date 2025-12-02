@@ -1,5 +1,7 @@
 package com.devs.ecommerce.dto;
 
+import java.math.BigDecimal;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -15,5 +17,5 @@ public class OrderItemResponseDTO {
     @PositiveOrZero(message = "quantity should be positive or zero")
     private Integer quantity;
     @Positive(message = "Price is always positive")
-    private double price; // Price per unit
+    private BigDecimal price; // Price per unit
 }

@@ -1,6 +1,8 @@
 package com.devs.ecommerce.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -15,6 +17,8 @@ public class OrderRequestDTO {
     private String town;
     @NotBlank(message = "Address is required")
     private String address;
-    @NotBlank(message = "Delivery Tax is required")
+    // @NotBlank(message = "Delivery Tax is required")
+    @NotEmpty(message="Order must contains at least one item")
+    @Size(min=1, message = "Order must contains at least one item")
     private List<OrderItemRequestDTO> items;
 }

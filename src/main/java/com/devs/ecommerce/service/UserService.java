@@ -44,7 +44,7 @@ public class UserService {
     /*
     public void confirmEmail(String email, String confirmationCode){
         User user = getUserByEmail(email);
-       System.out.println(user.getConfirmationCode());
+        System.out.println(user.getConfirmationCode());
         System.out.println(confirmationCode);
 
         if(user.getConfirmationCode().equals(confirmationCode)){

@@ -4,6 +4,8 @@ import com.devs.ecommerce.exception.ResourceNotFoundException;
 import com.devs.ecommerce.repositories.UserRepository;
 import com.devs.ecommerce.service.JwtService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableCaching
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
@@ -83,7 +86,7 @@ public class SecurityConfig {
                 .orElseThrow(()-> new ResourceNotFoundException("User not found"));
     }
 
-    @Bean
+    // @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());

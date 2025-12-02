@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class  OrderService {
         
         Order order = orderMapper.toEntity(orderRequest);
 
-        double totalPrice = 0.0;
+        BigDecimal totalPrice = BigDecimal.ZERO;
         for (OrderItem item : order.getItems()) {
             Product product = productRepository.findById(item.getProduct().getId())
                     .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
@@ -44,15 +45,15 @@ public class  OrderService {
             productRepository.save(product);
 
             item.setProduct(product);
-            double itemTotalPrice = item.getQuantity() * product.getPrice();
+            BigDecimal itemTotalPrice = product.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
             item.setPrice(itemTotalPrice);
-            totalPrice += itemTotalPrice;
+            totalPrice = totalPrice.add(itemTotalPrice);
 
             item.setOrder(order);
         }
 
-        double deliveryFee = calculateDeliveryFee(orderRequest.getTown());
-        totalPrice += deliveryFee;
+        BigDecimal deliveryFee = calculateDeliveryFee(orderRequest.getTown());
+        totalPrice = totalPrice.add(deliveryFee);
 
         order.setTotalPrice(totalPrice);
         order.setDeliveryTax(deliveryFee);
@@ -104,7 +105,7 @@ public class  OrderService {
     }
 
     // Calculate delivery fee based on town
-    private double calculateDeliveryFee(String townName) {
+    private BigDecimal calculateDeliveryFee(String townName) {
         Town town = townRepository.findByName(townName)
                 .orElseThrow(() -> new ResourceNotFoundException("Town not found"));
         return town.getDeliveryTax();

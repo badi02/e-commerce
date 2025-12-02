@@ -10,8 +10,13 @@ import com.devs.ecommerce.model.Product;
 import com.devs.ecommerce.repositories.BrandRepository;
 import com.devs.ecommerce.repositories.CategoryRepository;
 import com.devs.ecommerce.repositories.ProductRepository;
+
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -30,14 +35,22 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
-    private static final String UPLOADED_DIR = "src/main/resources/static/images/";
+    // private static final String UPLOADED_DIR =
+    // "src/main/resources/static/images/";
+    private static final String UPLOADED_DIR = System.getProperty("user.dir") + "/uploads/";
+
+    @PostConstruct
+    private void init() throws IOException {
+        Files.createDirectories(Paths.get(UPLOADED_DIR));
+    }
 
     @Transactional
-    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile[] images) throws IOException  {
+    public ProductDTO createProduct(ProductDTO productDTO, MultipartFile[] images) throws IOException {
         Product product = productMapper.toEntity(productDTO);
 
         Category category = categoryRepository.findById(productDTO.getCategory().getId())
@@ -50,13 +63,14 @@ public class ProductService {
 
         List<String> imagePaths = new ArrayList<>();
         if (images != null && images.length > 0) {
-            //List<String> imagePaths = new ArrayList<>();
+            // List<String> imagePaths = new ArrayList<>();
             for (MultipartFile image : images) {
                 String fileName = saveImage(image);
                 imagePaths.add("/images/" + fileName);
             }
-        }else {
-            System.out.println("Images are Null or empty"+ images);
+        } else {
+            // System.out.println("Images are Null or empty"+ images);
+            logger.info("No new images provided for product update; keeping existing or empty list.");
         }
         product.setImages(imagePaths);
 
@@ -69,7 +83,6 @@ public class ProductService {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
-        // Check and delete existing image(s)
         if (existingProduct.getImages() != null) {
             deleteImages(existingProduct.getImages());
         }
@@ -91,8 +104,9 @@ public class ProductService {
                 String fileName = saveImage(image);
                 imagePaths.add("/images/" + fileName);
             }
-        } else{
-            System.out.println("No image has been added "+ images);
+        } else {
+            // System.out.println("No image has been added "+ images);
+            logger.info("No new images provided for product update; keeping existing or empty list.");
         }
         existingProduct.setImages(imagePaths);
 
@@ -112,27 +126,27 @@ public class ProductService {
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-        if (product.getImages() != null ) {
+        if (product.getImages() != null) {
             deleteImages(product.getImages()); // Delete existing image if any
         }
         productRepository.deleteById(id);
     }
 
-    public ProductDTO getProduct(Long id){
+    public ProductDTO getProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("product not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("product not found"));
         return productMapper.toDTO(product);
     }
 
-    public Page<ProductListDTO> getAllProducts(@PageableDefault(size = 15) Pageable pageable){
+    public Page<ProductListDTO> getAllProducts(@PageableDefault(size = 15) Pageable pageable) {
         return productRepository.findAllWithoutComments(pageable);
     }
 
     public Page<ProductListDTO> searchProducts(@PageableDefault(size = 15) Pageable pageable,
-                                               String query,
-                                               BigDecimal minPrice,
-                                               BigDecimal maxPrice,
-                                               Long categoryId) {
+            String query,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            Long categoryId) {
         boolean isQueryEmpty = (query == null || query.trim().isEmpty());
         boolean isPriceRangeEmpty = (minPrice == null && maxPrice == null);
         boolean isCategoryEmpty = (categoryId == null);
@@ -156,8 +170,9 @@ public class ProductService {
             for (String imagePath : imagePaths) {
                 Path path = Paths.get(UPLOADED_DIR + imagePath);
                 try {
-                    Files.deleteIfExists(path);  // Delete the image file if it exists
+                    Files.deleteIfExists(path); // Delete the image file if it exists
                 } catch (IOException e) {
+                    logger.error("Failed to delete image at path: {}", path, e);
                     // Log the error or handle it as necessary
                     e.printStackTrace();
                 }

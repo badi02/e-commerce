@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,21 +13,26 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Table(name = "products")
+@Table(name = "products", indexes = {
+        @Index(columnList = "name"),
+        @Index(columnList = "price"),
+        @Index(columnList = "category_id")
+})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    private double price;
+    private BigDecimal price;
     private Integer quantity;
-    //private String image;
+    // private String image;
 
-    //@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<ProductImage> images = new ArrayList<>();
+    // @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval =
+    // true)
+    // private List<ProductImage> images = new ArrayList<>();
 
-    //@ElementCollection
+    // @ElementCollection
     private List<String> images = new ArrayList<>();
 
     @ManyToOne
@@ -36,4 +42,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @Version // for optimistic locking
+    private Long version;
 }

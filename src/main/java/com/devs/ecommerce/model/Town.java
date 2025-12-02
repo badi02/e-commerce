@@ -1,5 +1,7 @@
 package com.devs.ecommerce.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,5 +18,5 @@ public class Town {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private double deliveryTax;
+    private BigDecimal deliveryTax;
 }
