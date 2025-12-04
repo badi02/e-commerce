@@ -14,7 +14,7 @@
 ![Database](https://img.shields.io/badge/Database-PostgreSQL%20%2B%20JPA-336791?style=for-the-badge&logo=postgresql)
 ![Architecture](https://img.shields.io/badge/Architecture-Layered%20%2B%20Clean-blue?style=for-the-badge&logo=diagramsdotnet)
 
-A fully functional **Spring Boot--based backend** for an e-commerce
+A fully functional **Spring Boot-based backend** for an e-commerce
 platform.
 This application provides all essential features for managing products,
 orders, categories, brands, towns (delivery areas), and admin
