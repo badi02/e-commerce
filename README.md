@@ -15,20 +15,20 @@
 ![Architecture](https://img.shields.io/badge/Architecture-Layered%20%2B%20Clean-blue?style=for-the-badge&logo=diagramsdotnet)
 
 A fully functional **Spring Boot--based backend** for an e-commerce
-platform.\
+platform.
 This application provides all essential features for managing products,
 orders, categories, brands, towns (delivery areas), and admin
 authentication.
 
 It supports:
 
-- Admin CRUD operations\
-- Guest checkout\
-- Product image uploads\
-- JWT-secured admin operations\
-- Stock management with optimistic locking\
-- Caching for frequently accessed data\
-- Swagger documentation\
+- Admin CRUD operations
+- Guest checkout
+- Product image uploads
+- JWT-secured admin operations
+- Stock management with optimistic locking
+- Caching for frequently accessed data
+- Swagger documentation
 - PostgreSQL persistence
 
 ---
@@ -37,40 +37,40 @@ It supports:
 
 ### 🔐 Authentication
 
-- Admin login with JWT\
-- Password change endpoint\
-- Initial admin auto-created on startup\
+- Admin login with JWT
+- Password change endpoint
+- Initial admin auto-created on startup
 - Role-based protection (ADMIN only)
 
 ### 🛍 Product Management
 
-- Create, update, delete, and view products\
-- Upload multiple product images\
-- Search by name, category, price range\
-- Pagination for product listing\
+- Create, update, delete, and view products
+- Upload multiple product images
+- Search by name, category, price range
+- Pagination for product listing
 - Optimistic locking to prevent overselling
 
 ### 📦 Order Placement
 
 - Guest-based order creation (no authentication required)
-- Automatic stock deduction\
-- Delivery fee calculation based on town\
+- Automatic stock deduction
+- Delivery fee calculation based on town
 - Order status management by admins
 
 ### 🗂 Category & Brand Management
 
-- CRUD operations\
+- CRUD operations
 - Cached for performance
 
 ### 🗺 Town Management
 
-- Delivery tax management per town\
+- Delivery tax management per town
 - CRUD with admin access
 
 ### 🧪 Testing
 
-- Unit tests (Mockito)\
-- Integration tests\
+- Unit tests (Mockito)
+- Integration tests
 - Repository tests
 
 ---
@@ -136,7 +136,7 @@ Admin is auto-created on first run.
 
 ### 4️⃣ Configure JWT & Uploads
 
-- Customizable JWT secret\
+- Customizable JWT secret
 - Images stored in `uploads/` directory
 
 ### 5️⃣ Build the Project
@@ -151,7 +151,7 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-Access at:\
+Access at:
 ➡️ http://localhost:8080
 
 ### 7️⃣ Swagger Documentation
@@ -164,29 +164,29 @@ Access at:\
 
 ### Users
 
-- Admin accounts\
+- Admin accounts
 - Fields: id, email, password, role
 
 ### Products
 
-- Name, description, price, quantity\
-- List of image paths\
-- category_id, brand_id\
+- Name, description, price, quantity
+- List of image paths
+- category_id, brand_id
 - `@Version` field for optimistic locking
 
 ### Orders & Items
 
-- Customer details\
-- Delivery tax\
+- Customer details
+- Delivery tax
 - Items list (productId, quantity, price)
 
 ### Towns
 
 - Delivery zones & taxes
 
-Indexes added for: - product name\
+Indexes added for: - product name
 
-- product price\
+- product price
 - category_id
 
 ---
@@ -239,7 +239,7 @@ PUT `/api/orders/{id}/cancel` Cancel order
 
 CRUD endpoints under:
 
-- `/api/categories`\
+- `/api/categories`
 - `/api/brands`
 
 ---
@@ -254,9 +254,9 @@ CRUD endpoints under:
 
 ## 📈 Performance Optimizations
 
-- Optimistic locking on product stock\
-- DB indexing for search-heavy operations\
-- Category/Brand caching with eviction\
+- Optimistic locking on product stock
+- DB indexing for search-heavy operations
+- Category/Brand caching with eviction
 - Planned switch to BigDecimal for precision
 
 ---
@@ -269,46 +269,46 @@ Run all tests:
 mvn test
 ```
 
-Includes: - Unit tests (Mockito)\
+Includes: - Unit tests (Mockito)
 
-- Controller tests (@WebMvcTest)\
+- Controller tests (@WebMvcTest)
 - Repository tests (@DataJpaTest)
 
 ---
 
 ## 🖼 Image Handling
 
-- Images stored in `uploads/` directory\
-- Removes old images on update/delete\
+- Images stored in `uploads/` directory
+- Removes old images on update/delete
 - Supports multiple image uploads per product
 
 ---
 
 ## 📝 Notes & Future Enhancements
 
-- Optional email notifications (currently commented)\
-- Customer accounts (planned)\
+- Optional email notifications (currently commented)
+- Customer accounts (planned)
 - Production recommendations:
-  - HTTPS\
-  - Environment variables for secrets\
-  - Cloud image storage\
+  - HTTPS
+  - Environment variables for secrets
+  - Cloud image storage
   - Rate limiting & CAPTCHA
 
 ---
 
 ## 👤 Contact
 
-**Monder AISSOU**\
-📧 monder.dev@outlook.com\
+**Monder AISSOU**
+📧 monder.dev@outlook.com
 📞 +213675761221
 
 ---
 
 ## 🤝 Contributing
 
-1.  Fork the repository\
-2.  Create your feature branch\
-3.  Commit your changes\
+1.  Fork the repository
+2.  Create your feature branch
+3.  Commit your changes
 4.  Submit a Merge Request
 
 ---
